@@ -38,9 +38,6 @@ class Category(metaclass=IterableCategory):
         cat_dict[self.name] = self.chance_param
 
 
-# To initiate user input
-# Category.user_input()
-
 cat_dict = {'Work': 50,
             'Self Care': 20,
             'Play': 20, }
@@ -83,14 +80,18 @@ def category_roulette():
     for x in cat_dict:
         if cat_dict[x][2] <= randit and cat_dict[x][3] >= randit:
             res = x
-    print('The winning category is {}!'.format(res))
     return res
+
+
+def category_roulette_verbose():
+    category_roulette()
+    print('The winning category is {}!'.format(res))
 
 
 cat_roulette_selection = category_roulette()
 
 
-# act_dict = {}
+act_dict = {}
 
 class IterableActivity(type):
     _activities = WeakSet()
@@ -126,13 +127,10 @@ class Activity(metaclass=IterableActivity):
         act_dict[self.name] = [self.category, self.chance_param]
 
 
-# # Activity.user_input()
-
-# # testing param
-act_dict = {'Python DataQuest Course': ['Work', 50],
-            'Python Productivity Roulette': ['Work', 30],
-            'Exercise': ['Self Care', 20],
-            'Whatever you want': ['Play', 10]}
+# act_dict = {'Python DataQuest Course': ['Work', 50],
+#             'Python Productivity Roulette': ['Work', 30],
+#             'Exercise': ['Self Care', 20],
+#             'Whatever you want': ['Play', 10]}
 
 act_cat_dict = deepcopy(act_dict)  # so act_dict and act_cat_dict don't reference to the same object
 
@@ -170,19 +168,12 @@ def category_based_activity_prob_calculation():
 def category_based_activity_prob_calculation_verbose():
     category_based_activity_prob_calculation()
     for x in act_cat_dict:
-        print('{} has {:.2f}% chance of occurrence given its category is selected, or {:.2f}% globally'.format(x,
-                                                                                                               act_cat_dict[
-                                                                                                                   x][
-                                                                                                                   2],
-                                                                                                               act_cat_dict[
-                                                                                                                   x][
-                                                                                                                   3]))
-
-
-category_based_activity_prob_calculation_verbose()
+        print('{} has {:.2f}% chance of occurrence given its category is selected, or {:.2f}% globally'.format
+              (x, act_cat_dict[x][2], act_cat_dict[x][3]))
 
 
 def activity_roulette():
+    category_based_activity_prob_calculation()
     prob_cum = 0
     randit = uniform(0, act_cat_denom)
     res = ''
@@ -197,9 +188,6 @@ def activity_roulette():
             res = x
     return 'And the winning activity is {}!'.format(res)
 
-
-act_roulette_selection = activity_roulette()
-print(act_roulette_selection)
 
 act_dict_global = deepcopy(act_dict)
 
@@ -226,11 +214,9 @@ def global_category_based_activities_prob_calculation():
 
 
 def global_category_based_activities_prob_calculation_verbose():
+    global_category_based_activities_prob_calculation()
     for x in act_dict_global:
         print(
-            '{} has a {:.2f}% chance of occurrence given the right category selection, or {:.2f}% chance regardless of category.'.format(
-                x, act_dict_global[x][2], act_dict_global[x][4]))
-
-
-global_category_based_activities_prob_calculation()
-global_category_based_activities_prob_calculation_verbose()
+            '{} has a {:.2f}% chance of occurrence given the right category selection, '
+            'or {:.2f}% chance regardless of category.'.format
+            (x, act_dict_global[x][2], act_dict_global[x][4]))
